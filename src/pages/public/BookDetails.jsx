@@ -4,6 +4,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { getBookDetails, getBorrowHistory } from '../../api/books';
 import { Alert, AlertDescription } from '../../components/common/alert';
 import { BookOpen, Users, Calendar, AlertCircle, LibraryBig } from 'lucide-react';
+import { formatDate } from '../../lib/utils';
+import { Link } from 'react-router-dom';
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -104,7 +106,7 @@ const BookDetails = () => {
               <div className="flex items-center">
                 <Calendar className="h-5 w-5 text-gray-400 mr-2" />
                 <span className="text-gray-600">
-                  Added on: {new Date(book.created_at).toLocaleDateString('en-IN')}
+                  Added on: {formatDate(book.created_at)}
                 </span>
               </div>
 
@@ -165,16 +167,18 @@ const BookDetails = () => {
                 {borrowHistory.map((record) => (
                   <tr key={record.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {record.student.first_name} {record.student.last_name}
+                      <Link to={`/profile/${record.student.username}`} className="hover:underline">
+                        {record.student.first_name} {record.student.last_name}
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {new Date(record.issued_at).toLocaleDateString('en-IN')}
+                      {formatDate(record.issued_at)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {new Date(record.due_at).toLocaleDateString('en-IN')}
+                        {formatDate(record.due_at)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {record.returned_at ? new Date(record.returned_at).toLocaleDateString('en-IN') : '-'}
+                        {record.returned_at ? formatDate(record.returned_at) : '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -184,7 +188,7 @@ const BookDetails = () => {
                             ? 'bg-red-100 text-red-800' 
                             : 'bg-yellow-100 text-yellow-800'}`}
                       >
-                        {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                        {record.is_overdue ? 'OVERDUE' : record.status.toUpperCase()}
                       </span>
                     </td>
                   </tr>

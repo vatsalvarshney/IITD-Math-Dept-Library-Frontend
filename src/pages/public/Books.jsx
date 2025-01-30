@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { X, Filter, ChevronRight } from 'lucide-react';
 import axios from '../../api/axios';
 import { Link } from 'react-router-dom';
+import { truncatedText } from '../../lib/utils';
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -96,12 +97,6 @@ const Books = () => {
       : [...selectedTags, tagId];
     updateFilters({ tags: newTags.join(',') });
   };
-
-  const textMaxWidth = window.innerWidth>1280 ? 120 : 70;
-
-  const truncatedText = (text) => {
-    return text?.length > textMaxWidth ? text?.slice(0, textMaxWidth) + '...' : text;
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

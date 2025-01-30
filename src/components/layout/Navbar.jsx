@@ -28,6 +28,12 @@ const Navbar = () => {
               >
                 Home
               </Link>
+              <Link
+                to="/books"
+                className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
+              >
+                Explore
+              </Link>
               <a
                 href="https://maths.iitd.ac.in"
                 target="_blank"
@@ -37,19 +43,13 @@ const Navbar = () => {
                 Math Department
               </a>
               <a
-                href="https://iitd.ac.in"
+                href="https://home.iitd.ac.in"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
               >
                 IITD
               </a>
-              <Link
-                to="/books"
-                className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
-              >
-                All Books
-              </Link>
             </div>
           </div>
           
@@ -109,6 +109,12 @@ const Navbar = () => {
             >
               Home
             </Link>
+            <Link
+              to="/books"
+              className="block px-3 py-2 text-gray-700 hover:text-primary"
+            >
+              Explore
+            </Link>
             <a
               href="https://maths.iitd.ac.in"
               target="_blank"
@@ -118,19 +124,13 @@ const Navbar = () => {
               Math Department
             </a>
             <a
-              href="https://iitd.ac.in"
+              href="https://home.iitd.ac.in"
               target="_blank"
               rel="noopener noreferrer"
               className="block px-3 py-2 text-gray-700 hover:text-primary"
             >
               IITD
             </a>
-            <Link
-              to="/books"
-              className="block px-3 py-2 text-gray-700 hover:text-primary"
-            >
-              All Books
-            </Link>
             {user ? (
               <>
                 <Link

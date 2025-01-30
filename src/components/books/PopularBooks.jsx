@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { truncatedText } from '../../lib/utils';
 
 const BookCard = ({ book }) => (
   <Link
@@ -7,8 +8,8 @@ const BookCard = ({ book }) => (
     className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
   >
     <div className="p-4">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">{book.title}</h3>
-      <p className="text-gray-600 text-sm mb-2">by {book.author}</p>
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">{truncatedText(book.title)}</h3>
+      <p className="text-gray-600 text-sm mb-2">by {truncatedText(book.author)}</p>
       <div className="flex justify-between items-center">
         <span className={book.available_quantity>0? "text-sm text-green-600" : "text-sm text-red-700"}>
           Available: {book.available_quantity}
