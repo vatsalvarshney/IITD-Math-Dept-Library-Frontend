@@ -3,6 +3,7 @@ import { AuthProvider } from './hooks/useAuth';
 import MainLayout from './layouts/MainLayout';
 import Landing from './pages/public/Landing';
 import Books from './pages/public/Books';
+import BookDetails from './pages/public/BookDetails';
 
 // Route guards
 const PrivateRoute = ({ element, allowedRoles = [] }) => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Landing />} />
             <Route path="/books" element={<Books />} />
+            <Route path="/books/:id" element={<BookDetails />} />
           </Route>
 
           {/* Protected routes will be added here as we create them */}

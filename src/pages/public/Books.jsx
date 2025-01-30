@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { X, Filter, ChevronRight } from 'lucide-react';
 import axios from '../../api/axios';
+import { Link } from 'react-router-dom';
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -136,7 +137,7 @@ const Books = () => {
               {/* Availability filter */}
               <div className="mb-6">
                 <h3 className="font-medium mb-2">Availability</h3>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={availableOnly}
@@ -152,7 +153,7 @@ const Books = () => {
                 <h3 className="font-medium mb-2">Tags</h3>
                 <div className="space-y-2">
                   {tags.map((tag) => (
-                    <label key={tag.id} className="flex items-center space-x-2">
+                    <label key={tag.id} className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={selectedTags.includes(tag.id.toString())}
@@ -204,7 +205,7 @@ const Books = () => {
               ) : books.length > 0 ? (
                 <div className="divide-y">
                   {books.map((book) => (
-                    <div key={book.id} className="p-4 hover:bg-gray-50">
+                    <Link to={`/books/${book.id}`} key={book.id} className="p-4 hover:bg-gray-50 block">
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="font-medium text-lg mb-1">{truncatedText(book.title)}</h3>
@@ -240,7 +241,7 @@ const Books = () => {
                           Shelf {book.shelf || '?'} | Rack {book.rack || '?'}
                         </span>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               ) : (
