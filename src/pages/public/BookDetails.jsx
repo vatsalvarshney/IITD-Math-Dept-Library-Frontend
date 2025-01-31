@@ -6,6 +6,10 @@ import { Alert, AlertDescription } from '../../components/common/alert';
 import { BookOpen, Users, Calendar, AlertCircle, LibraryBig } from 'lucide-react';
 import { formatDate } from '../../lib/utils';
 import { Link } from 'react-router-dom';
+import IssueBookModal from '../../components/staff/IssueBookModal';
+import { issueBook } from '../../api/staff';
+import { deleteBook } from '../../api/books';
+import { useNavigate } from 'react-router-dom';
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -14,27 +18,49 @@ const BookDetails = () => {
   const [borrowHistory, setBorrowHistory] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+  const [showIssueModal, setShowIssueModal] = React.useState(false);
+  const navigate = useNavigate();
+
+  const fetchBookData = async () => {
+    try {
+      setLoading(true);
+      const [bookRes, historyRes] = await Promise.all([
+        getBookDetails(id),
+        user?.role === 'staff' ? getBorrowHistory(id) : Promise.resolve({ data: [] })
+      ]);
+      setBook(bookRes.data);
+      setBorrowHistory(historyRes.data);
+    } catch (err) {
+      setError('Failed to load book details');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   React.useEffect(() => {
-    const fetchBookData = async () => {
-      try {
-        setLoading(true);
-        const [bookRes, historyRes] = await Promise.all([
-          getBookDetails(id),
-          user?.role === 'staff' ? getBorrowHistory(id) : Promise.resolve({ data: [] })
-        ]);
-        setBook(bookRes.data);
-        setBorrowHistory(historyRes.data);
-      } catch (err) {
-        setError('Failed to load book details');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBookData();
   }, [id, user]);
+
+  const handleIssueBook = async (data) => {
+    try {
+      await issueBook(data);
+      fetchBookData(); // Refresh data
+    } catch (error) {
+      console.error('Error issuing book:', error);
+    }
+  };
+
+  const handleDeleteBook = async () => {
+    if (window.confirm('Are you sure you want to delete this book?')) {
+      try {
+        await deleteBook(id);
+        navigate('/staff');
+      } catch (error) {
+        console.error('Error deleting book:', error);
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -121,16 +147,22 @@ const BookDetails = () => {
             {user?.role === 'staff' && (
               <div className="mt-6 space-y-3">
                 <button
-                  className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"
-                  onClick={() => {/* Add issue book logic */}}
+                  className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark cursor-pointer"
+                  onClick={() => {setShowIssueModal(true)}}
                 >
                   Issue Book
                 </button>
                 <button
-                  className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
+                  className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 cursor-pointer"
                   onClick={() => {/* Add update book logic */}}
                 >
                   Update Details
+                </button>
+                <button
+                  className="w-full bg-red-100 text-red-800 px-4 py-2 rounded-md hover:bg-red-200 cursor-pointer"
+                  onClick={handleDeleteBook}
+                >
+                  Delete Book
                 </button>
               </div>
             )}
@@ -197,6 +229,15 @@ const BookDetails = () => {
             </table>
           </div>
         </div>
+      )}
+
+      {/* Issue Book Modal */}
+      {user?.role === 'staff' && showIssueModal && (
+        <IssueBookModal
+          book={book}
+          onClose={() => setShowIssueModal(false)}
+          onIssue={handleIssueBook}
+        />
       )}
     </div>
   );

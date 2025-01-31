@@ -6,7 +6,7 @@ import Books from './pages/public/Books';
 import BookDetails from './pages/public/BookDetails';
 import Login from './pages/auth/Login';
 import Profile from './pages/student/Profile';
-
+import Dashboard from './pages/staff/Dashboard';
 
 // Route guards
 const PrivateRoute = ({ element, allowedRoles = [] }) => {
@@ -47,6 +47,17 @@ const App = () => {
                 />
               }
             />
+          </Route>
+          <Route 
+            path="/staff/*" 
+            element={
+              <PrivateRoute 
+                element={<MainLayout />} 
+                allowedRoles={['staff']} 
+              />
+            }
+          >
+            <Route index element={<Dashboard />} />
           </Route>
         </Routes>
       </Router>
