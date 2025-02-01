@@ -171,7 +171,7 @@ const Books = () => {
                   value={query}
                   onChange={(e) => updateFilters({ q: e.target.value })}
                   placeholder="Search books..."
-                  className="w-full pl-4 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-4 pr-10 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
                 {query && (
                   <button
@@ -196,9 +196,9 @@ const Books = () => {
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
                 </div>
               ) : books.length > 0 ? (
-                <div className="divide-y">
+                <div className="divide-y-2">
                   {books.map((book) => (
-                    <Link to={`/books/${book.id}`} key={book.id} className="p-4 hover:bg-gray-50 block">
+                    <Link to={`/books/${book.id}`} key={book.id} className="p-4 hover:bg-gray-50 block border-gray-200">
                       <div className="flex justify-between items-start">
                         <div>
                           <h3 className="font-medium text-lg mb-1">{truncatedText(book.title)}</h3>

@@ -12,6 +12,7 @@ const Login = () => {
   });
   const [errors, setErrors] = React.useState({});
   const [loading, setLoading] = React.useState(false);
+  const [staffLogin, setStaffLogin] = React.useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,9 +40,9 @@ const Login = () => {
     if (!credentials.username.trim()) {
       newErrors.username = 'Username is required';
     }
-    if (!credentials.password) {
-      newErrors.password = 'Password is required';
-    }
+    // if (!credentials.password) {
+    //   newErrors.password = 'Password is required';
+    // }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -86,6 +87,27 @@ const Login = () => {
             Welcome to Mathematics Department Library
           </p>
         </div>
+
+        <div className="flex justify-center max-w-xs items-center mx-auto">
+          <button
+            type="button"
+            className={`${
+              staffLogin ? 'bg-gray-200 text-gray-900 hover:bg-gray-300 cursor-pointer' : 'bg-primary text-white'
+            } w-1/2 py-2 rounded-l-md`}
+            onClick={() => setStaffLogin(false)}
+          >
+            Student
+          </button>
+          <button
+            type="button"
+            className={`${
+              staffLogin ? 'bg-primary text-white' : 'bg-gray-200 text-gray-900 hover:bg-gray-300 cursor-pointer'
+            } w-1/2 py-2 rounded-r-md`}
+            onClick={() => setStaffLogin(true)}
+          >
+            Staff
+          </button>
+        </div>
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {errors.general && (
@@ -94,9 +116,9 @@ const Login = () => {
             </div>
           )}
           
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="rounded-md space-y-4">
             <Input
-              label="Username"
+              label={staffLogin? "Username" : "IITD Kerberos ID (E.g. mt1240999)"}
               id="username"
               name="username"
               type="text"
@@ -107,28 +129,24 @@ const Login = () => {
               error={errors.username}
             />
 
-            <Input
-              label="Password"
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={credentials.password}
-              onChange={handleChange}
-              error={errors.password}
-            />
+            {staffLogin && (
+              <Input
+                label="Password"
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                // required
+                value={credentials.password}
+                onChange={handleChange}
+                error={errors.password}
+              />
+            )}
           </div>
 
           <Button type="submit" loading={loading}>
             Sign in
           </Button>
-
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
-              * Use your IITD Kerberos credentials to login
-            </p>
-          </div>
         </form>
       </div>
     </div>

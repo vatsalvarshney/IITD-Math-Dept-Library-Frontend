@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search } from 'lucide-react';
+import { Search, ArrowRight } from 'lucide-react';
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = React.useState('');
@@ -19,7 +19,10 @@ const SearchBar = ({ onSearch }) => {
           placeholder="Search books by title, author, or ISBN..."
           className="w-full px-4 py-3 pl-12 text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
         />
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
+        {query && (
+          <ArrowRight className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5 cursor-pointer" onClick={handleSubmit} />
+        )}
       </div>
     </form>
   );

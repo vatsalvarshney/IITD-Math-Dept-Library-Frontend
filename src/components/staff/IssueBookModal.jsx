@@ -58,14 +58,14 @@ const IssueBookModal = ({ book, onClose, onIssue }) => {
             </p>
             
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Student Entry Number
+              Student
             </label>
             <Select
               options={students}
               value={students.find((s) => s.value === student)}
               onChange={(selected) => setStudent(selected.value)}
               className="w-full"
-              placeholder="Select student..."
+              placeholder="Search by Name or Entry Number..."
               required
             />
           </div>

@@ -142,10 +142,6 @@ const Profile = () => {
             <p className="text-sm text-gray-500">Username</p>
             <p className="text-lg">{profile.username}</p>
           </div>
-          <div>
-            <p className="text-sm text-gray-500">Role</p>
-            <p className="text-lg capitalize">{profile.role}</p>
-          </div>
         </div>
       </div>
 
