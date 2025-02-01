@@ -154,7 +154,7 @@ const BookDetails = () => {
                 </button>
                 <button
                   className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 cursor-pointer"
-                  onClick={() => {/* Add update book logic */}}
+                  onClick={() => {navigate(`/staff/update/${id}`)}}
                 >
                   Update Details
                 </button>

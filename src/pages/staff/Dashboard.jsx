@@ -11,6 +11,7 @@ import StatsBox from '../../components/staff/StatsBox';
 import IssueBookModal from '../../components/staff/IssueBookModal';
 import { formatDate, truncatedText } from '../../lib/utils';
 import { Link } from 'react-router-dom';
+import ExportButtons from '../../components/staff/ExportButtons';
 
 const Dashboard = () => {
   const [stats, setStats] = React.useState(null);
@@ -107,18 +108,19 @@ const Dashboard = () => {
         <div className="flex gap-4">
           <button
             onClick={() => navigate('/staff/add')}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-md hover:bg-primary-dark cursor-pointer"
           >
             <Plus className="h-5 w-5" />
             Add Book
           </button>
-          <button
-            onClick={() => {/* Handle export */}}
+          {/* <button
+            onClick={() => {}}
             className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
           >
             <Download className="h-5 w-5" />
             Export Data
-          </button>
+          </button> */}
+          <ExportButtons />
         </div>
       </div>
 
@@ -242,7 +244,7 @@ const Dashboard = () => {
                         setShowIssueModal(true);
                       }}
                       disabled={book.available_quantity === 0}
-                      className="text-sm text-white bg-primary px-3 py-1 rounded hover:bg-primary-dark disabled:opacity-50"
+                      className="text-sm text-white bg-primary px-3 py-1 rounded hover:bg-primary-dark disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     >
                       Issue
                     </button>

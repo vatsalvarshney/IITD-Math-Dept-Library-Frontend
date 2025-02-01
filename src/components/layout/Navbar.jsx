@@ -56,12 +56,14 @@ const Navbar = () => {
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {user ? (
               <div className="flex items-center space-x-4">
-                <Link
-                  to={`/profile/${user.username}`}
-                  className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
-                >
-                  Profile
-                </Link>
+                {user.role === 'student' && (
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
+                  >
+                    Profile
+                  </Link>
+                )}
                 {user.role === 'staff' && (
                   <Link
                     to="/staff"

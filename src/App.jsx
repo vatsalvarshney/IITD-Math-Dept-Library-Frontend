@@ -7,6 +7,8 @@ import BookDetails from './pages/public/BookDetails';
 import Login from './pages/auth/Login';
 import Profile from './pages/student/Profile';
 import Dashboard from './pages/staff/Dashboard';
+import AddBook from './pages/staff/AddBook';
+import UpdateBook from './pages/staff/UpdateBook';
 
 // Route guards
 const PrivateRoute = ({ element, allowedRoles = [] }) => {
@@ -49,7 +51,6 @@ const App = () => {
             />
           </Route>
           <Route 
-            path="/staff/*" 
             element={
               <PrivateRoute 
                 element={<MainLayout />} 
@@ -57,7 +58,9 @@ const App = () => {
               />
             }
           >
-            <Route index element={<Dashboard />} />
+            <Route path='staff' element={<Dashboard />} />
+            <Route path="staff/add" element={<AddBook />} />
+            <Route path="staff/update/:id" element={<UpdateBook />} />
           </Route>
         </Routes>
       </Router>

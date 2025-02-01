@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { X, Filter, ChevronRight } from 'lucide-react';
-import axios from '../../api/axios';
 import { Link } from 'react-router-dom';
 import { truncatedText } from '../../lib/utils';
+import { getTags, getBooks } from '../../api/books';
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +27,7 @@ const Books = () => {
   React.useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await axios.get('/api/tags/');
+        const response = await getTags();
         setTags(response.data);
       } catch (error) {
         console.error('Error fetching tags:', error);
@@ -42,14 +42,12 @@ const Books = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/books/', {
-        params: {
-          q: query,
-          tags: memoizedTags,
-          available: availableOnly,
-          page: currentPage,
-          per_page: 10,
-        },
+      const response = await getBooks({
+        q: query,
+        tags: memoizedTags,
+        available: availableOnly,
+        page: currentPage,
+        per_page: 10,
       });
       setBooks(response.data.results);
       setPagination({

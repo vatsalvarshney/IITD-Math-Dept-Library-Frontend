@@ -55,7 +55,11 @@ const Login = () => {
     try {
       const user = await login(credentials);
       // If login successful, redirect to the return URL
-      navigate(from, { replace: true });
+      if (user.role === 'staff') {
+        navigate('/staff');
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (error) {
       if (error.response?.status === 401) {
         setErrors({
