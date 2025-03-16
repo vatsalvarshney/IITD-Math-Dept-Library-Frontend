@@ -15,7 +15,7 @@ const UpdateBook = () => {
     const fetchBook = async () => {
       try {
         const response = await getBookDetails(id);
-        response.data.tags = response.data.tags.map((tag) => tag.id);
+        response.data.tags = response.data.tags.map((tag) => tag._id);
         setBook(response.data);
       } catch (err) {
         setErrors(Object.entries(err.response?.data).map(
@@ -35,9 +35,19 @@ const UpdateBook = () => {
       await updateBook(id, bookData);
       navigate(`/books/${id}`);
     } catch (err) {
-      setErrors(Object.entries(err.response?.data).map(
-        (error) => error[1].join(', '), // Join error messages
-      ) || ['Failed to update book']);
+      console.error(err);
+      // setErrors(Object.entries(err.response?.data).map(
+      //   (error) => error[1].join(', '), // Join error messages
+      // ) || ['Failed to update book']);
+      try {
+        setErrors(Object.entries(err.response?.data?.errors).map(
+          (error) => error[1].msg
+        ) || ['Failed to update book']);
+      } catch {
+        setErrors([err.response?.data?.error] || ['Failed to update book']);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
     }

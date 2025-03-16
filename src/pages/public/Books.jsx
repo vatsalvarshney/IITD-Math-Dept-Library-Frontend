@@ -146,11 +146,11 @@ const Books = () => {
                 <h3 className="font-medium mb-2">Tags</h3>
                 <div className="space-y-2">
                   {tags.map((tag) => (
-                    <label key={tag.id} className="flex items-center space-x-2 cursor-pointer">
+                    <label key={tag._id} className="flex items-center space-x-2 cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={selectedTags.includes(tag.id.toString())}
-                        onChange={() => toggleTag(tag.id.toString())}
+                        checked={selectedTags.includes(tag._id.toString())}
+                        onChange={() => toggleTag(tag._id.toString())}
                         className="rounded border-gray-300 text-primary focus:ring-primary"
                       />
                       <span>{tag.name}</span>

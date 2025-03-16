@@ -161,11 +161,11 @@ const BookForm = ({ onSubmit, isSubmitting, initialData = null }) => {
         </label>
         <div className="space-y-2">
           {availableTags.map((tag) => (
-            <label key={tag.id} className="inline-flex items-center mr-4">
+            <label key={tag._id} className="inline-flex items-center mr-4">
               <input
                 type="checkbox"
-                checked={formData.tags.includes(tag.id)}
-                onChange={() => handleTagChange(tag.id)}
+                checked={formData.tags.includes(tag._id)}
+                onChange={() => handleTagChange(tag._id)}
                 className="rounded border border-gray-300 text-primary focus:ring-primary"
               />
               <span className="ml-2 text-sm text-gray-700">{tag.name}</span>

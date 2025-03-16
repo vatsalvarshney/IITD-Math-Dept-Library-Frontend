@@ -15,10 +15,20 @@ const AddBook = () => {
       await addBook(bookData);
       navigate('/staff');
     } catch (err) {
-      setErrors(Object.entries(err.response?.data).map(
-        (error) => error[1].join(', '), // Join error messages
-      ) || ['Failed to add book']);
+      // setErrors(Object.entries(err.response?.data).map(
+      //   (error) => error[1].join(', '), // Join error messages
+      // ) || ['Failed to add book']);
       // setError(err.response?.data?.message || 'Failed to add book');
+
+      try {
+        setErrors(Object.entries(err.response?.data?.errors).map(
+          (error) => error[1].msg
+        ) || ['Failed to update book']);
+      } catch {
+        setErrors([err.response?.data?.error] || ['Failed to update book']);
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
     }
