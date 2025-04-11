@@ -12,6 +12,7 @@ import IssueBookModal from '../../components/staff/IssueBookModal';
 import { formatDate, truncatedText } from '../../lib/utils';
 import { Link } from 'react-router-dom';
 import ExportButtons from '../../components/staff/ExportButtons';
+import ImportButtons from '../../components/staff/ImportButtons';
 
 const Dashboard = () => {
   const [stats, setStats] = React.useState(null);
@@ -111,7 +112,7 @@ const Dashboard = () => {
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-md hover:bg-primary-dark cursor-pointer"
           >
             <Plus className="h-5 w-5" />
-            Add Book
+            Add Book Manually
           </button>
           {/* <button
             onClick={() => {}}
@@ -120,6 +121,7 @@ const Dashboard = () => {
             <Download className="h-5 w-5" />
             Export Data
           </button> */}
+          <ImportButtons />
           <ExportButtons />
         </div>
       </div>
