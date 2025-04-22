@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -15,6 +15,14 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Override methods if Apache blocks PUT, DELETE, PATCH
+    const method = config.method?.toUpperCase();
+    if (['PUT', 'DELETE', 'PATCH'].includes(method)) {
+      config.headers['X-HTTP-Method-Override'] = method;
+      config.method = 'POST'; // actually send it as POST
+    }
+
     return config;
   },
   (error) => {
