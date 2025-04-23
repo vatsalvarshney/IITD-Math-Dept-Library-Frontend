@@ -68,7 +68,7 @@ const Landing = () => {
       {/* Content Sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Popular Books Section */}
-        <section className="mb-12">
+        {/* <section className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Books</h2>
           {isLoading ? (
             <div className="flex justify-center">
@@ -77,7 +77,7 @@ const Landing = () => {
           ) : (
             <PopularBooks books={popularBooks} />
           )}
-        </section>
+        </section> */}
 
         {/* New Arrivals Section */}
         <section>
@@ -90,6 +90,13 @@ const Landing = () => {
             <PopularBooks books={newArrivals} />
           )}
         </section>
+      </div>
+
+      <div className="bg-gray-900 text-white py-3 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm">&copy; {new Date().getFullYear()} IIT Delhi</p>
+          <p className="text-sm">Developed by <a href='https://www.linkedin.com/in/vatsal-varshney/'>Vatsal Varshney</a></p>
+        </div>
       </div>
     </div>
   );
