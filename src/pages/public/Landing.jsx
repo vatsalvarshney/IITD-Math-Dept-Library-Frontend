@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MapPin } from 'lucide-react';
 import { getPopularBooks, getNewArrivals } from '../../api/books';
 import SearchBar from '../../components/common/SearchBar';
 import PopularBooks from '../../components/books/PopularBooks';
@@ -48,9 +49,18 @@ const Landing = () => {
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             Welcome to Mathematics Department Library
           </h1>
-          <p className="text-xl text-gray-200 mb-8">
+          <h5 className="text-xl text-gray-200 mb-8">
             Indian Institute of Technology Delhi
-          </p>
+          </h5>
+          <a
+            href="https://maps.app.goo.gl/jTtGBGyyLXaxxB1i6"
+            className="flex items-center gap-2 text-lg text-gray-200 mb-8 max-w-2xl hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MapPin className="w-5 h-5" />
+            Room no. 534, Wing C, 5th Floor, Academic Complex West (99B)
+          </a>
           <SearchBar onSearch={handleSearch} />
         </div>
       </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Menu } from 'lucide-react';
+import iitdLogo from '../../assets/logo.png'
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -19,7 +20,8 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold text-primary">Math Library</span>
+              <img src={iitdLogo} alt="IITD Logo" className="h-12 w-12 mr-2 object-contain" />
+              <span className="text-xl font-bold text-primary">Mathematics Library</span>
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <Link
@@ -40,7 +42,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
               >
-                Math Department
+                Department of Mathematics
               </a>
               <a
                 href="https://home.iitd.ac.in"
@@ -48,7 +50,7 @@ const Navbar = () => {
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-primary px-3 py-2 rounded-md"
               >
-                IITD
+                IIT Delhi
               </a>
             </div>
           </div>
