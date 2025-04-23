@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { X, Filter, ChevronRight } from 'lucide-react';
+import { X, Filter, ChevronRight, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { truncatedText } from '../../lib/utils';
 import { getTags, getBooks } from '../../api/books';
@@ -11,6 +11,7 @@ const Books = () => {
   const [tags, setTags] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
+  const [localQuery, setLocalQuery] = React.useState('');
   const [pagination, setPagination] = React.useState({
     currentPage: 1,
     totalPages: 1,
@@ -22,6 +23,11 @@ const Books = () => {
   const selectedTags = searchParams.get('tags')?.split(',').filter(Boolean) || [];
   const availableOnly = searchParams.get('available') === 'true';
   const currentPage = parseInt(searchParams.get('page') || '1');
+
+  // Initialize local query with URL query on mount and when URL query changes
+  React.useEffect(() => {
+    setLocalQuery(query);
+  }, [query]);
 
   // Fetch tags on mount
   React.useEffect(() => {
@@ -36,7 +42,7 @@ const Books = () => {
     fetchTags();
   }, []);
 
-  // Fetch books when filters change
+  // Memoize tags for dependency tracking
   const memoizedTags = React.useMemo(() => selectedTags.join(','), [selectedTags]);
 
   const fetchBooks = async () => {
@@ -62,9 +68,16 @@ const Books = () => {
     }
   };
 
+  // Only fetch books when filters actually change
   React.useEffect(() => {
     fetchBooks();
-  }, [query, memoizedTags, availableOnly, currentPage]); // Only re-run when these change
+  }, [query, memoizedTags, availableOnly, currentPage]); 
+
+  // Handle search submission
+  const handleSearchSubmit = (e) => {
+    if (e) e.preventDefault();
+    updateFilters({ q: localQuery });
+  };
 
   // Update filters
   const updateFilters = (updates) => {
@@ -85,6 +98,7 @@ const Books = () => {
 
   // Clear all filters
   const clearFilters = () => {
+    setLocalQuery('');
     setSearchParams({});
   };
 
@@ -165,28 +179,39 @@ const Books = () => {
           <div className="flex-1">
             {/* Search bar */}
             <div className="bg-white p-4 rounded-lg shadow mb-4">
-              <div className="relative">
+              <form onSubmit={handleSearchSubmit} className="relative flex">
                 <input
                   type="text"
-                  value={query}
-                  onChange={(e) => updateFilters({ q: e.target.value })}
+                  value={localQuery}
+                  onChange={(e) => setLocalQuery(e.target.value)}
+                  onBlur={handleSearchSubmit}
                   placeholder="Search books..."
-                  className="w-full pl-4 pr-10 py-2 border border-gray-400 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-4 pr-10 py-2 border border-gray-400 rounded-l-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
-                {query && (
+                {localQuery && (
                   <button
-                    onClick={() => updateFilters({ q: '' })}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    type="button"
+                    onClick={() => {
+                      setLocalQuery('');
+                      updateFilters({ q: '' });
+                    }}
+                    className="absolute right-16 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
                     <X className="h-5 w-5" />
                   </button>
                 )}
-              </div>
+                <button
+                  type="submit"
+                  className="flex items-center justify-center px-4 bg-primary text-white rounded-r-lg hover:bg-primary-dark"
+                >
+                  <Search className="h-5 w-5" />
+                </button>
+              </form>
             </div>
 
             {/* Results count */}
             <div className="mb-4 text-gray-600">
-              {pagination.totalCount} {pagination.totalCount==1? "book" : "books"} found
+              {pagination.totalCount} {pagination.totalCount === 1 ? "book" : "books"} found
             </div>
 
             {/* Books list */}
