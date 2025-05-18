@@ -3,12 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { X, Filter, ChevronRight, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { truncatedText } from '../../lib/utils';
-import { getTags, getBooks } from '../../api/books';
+import { getTags, getBooks, getShelves } from '../../api/books';
 
 const Books = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [books, setBooks] = React.useState([]);
   const [tags, setTags] = React.useState([]);
+  const [shelves, setShelves] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
   const [localQuery, setLocalQuery] = React.useState('');
@@ -21,6 +22,7 @@ const Books = () => {
   // Get current filter values from URL
   const query = searchParams.get('q') || '';
   const selectedTags = searchParams.get('tags')?.split(',').filter(Boolean) || [];
+  const selectedShelves = searchParams.get('shelves')?.split(',').filter(Boolean) || [];
   const availableOnly = searchParams.get('available') === 'true';
   const currentPage = parseInt(searchParams.get('page') || '1');
 
@@ -29,21 +31,26 @@ const Books = () => {
     setLocalQuery(query);
   }, [query]);
 
-  // Fetch tags on mount
+  // Fetch tags and shelves on mount
   React.useEffect(() => {
-    const fetchTags = async () => {
+    const fetchFilters = async () => {
       try {
-        const response = await getTags();
-        setTags(response.data);
+        const [tagsRes, shelvesRes] = await Promise.all([
+          getTags(),
+          getShelves()
+        ]);
+        setTags(tagsRes.data);
+        setShelves(shelvesRes.data);
       } catch (error) {
-        console.error('Error fetching tags:', error);
+        console.error('Error fetching filters:', error);
       }
     };
-    fetchTags();
+    fetchFilters();
   }, []);
 
-  // Memoize tags for dependency tracking
+  // Memoize tags and shelves for dependency tracking
   const memoizedTags = React.useMemo(() => selectedTags.join(','), [selectedTags]);
+  const memoizedShelves = React.useMemo(() => selectedShelves.join(','), [selectedShelves]);
 
   const fetchBooks = async () => {
     setLoading(true);
@@ -51,6 +58,7 @@ const Books = () => {
       const response = await getBooks({
         q: query,
         tags: memoizedTags,
+        shelves: memoizedShelves,
         available: availableOnly,
         page: currentPage,
         per_page: 10,
@@ -71,7 +79,7 @@ const Books = () => {
   // Only fetch books when filters actually change
   React.useEffect(() => {
     fetchBooks();
-  }, [query, memoizedTags, availableOnly, currentPage]); 
+  }, [query, memoizedTags, memoizedShelves, availableOnly, currentPage]); 
 
   // Handle search submission
   const handleSearchSubmit = (e) => {
@@ -110,6 +118,14 @@ const Books = () => {
     updateFilters({ tags: newTags.join(',') });
   };
 
+  // Toggle shelf selection
+  const toggleShelf = (shelf) => {
+    const newShelves = selectedShelves.includes(shelf)
+      ? selectedShelves.filter(s => s !== shelf)
+      : [...selectedShelves, shelf];
+    updateFilters({ shelves: newShelves.join(',') });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,7 +147,7 @@ const Books = () => {
             <div className="bg-white p-4 rounded-lg shadow">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Filters</h2>
-                {(query || selectedTags.length > 0 || availableOnly) && (
+                {(query || selectedTags.length > 0 || selectedShelves.length > 0 || availableOnly) && (
                   <button
                     onClick={clearFilters}
                     className="text-sm text-primary hover:text-primary-dark"
@@ -153,6 +169,24 @@ const Books = () => {
                   />
                   <span>Show available only</span>
                 </label>
+              </div>
+
+              {/* Shelves filter */}
+              <div className="mb-6">
+                <h3 className="font-medium mb-2">Shelves</h3>
+                <div className="space-y-2">
+                  {shelves.map((shelf) => (
+                    <label key={shelf} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedShelves.includes(shelf)}
+                        onChange={() => toggleShelf(shelf)}
+                        className="rounded border-gray-300 text-primary focus:ring-primary"
+                      />
+                      <span>Shelf {shelf}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               {/* Tags filter */}

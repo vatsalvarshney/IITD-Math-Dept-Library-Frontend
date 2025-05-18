@@ -10,3 +10,4 @@ export const getBorrowHistory = (bookId) => axios.get(`/api/books/${bookId}/hist
 export const addBook = (bookData) => axios.post('/api/books/add/', bookData);
 export const updateBook = (bookId, bookData) => axios.put(`/api/books/${bookId}/update/`, bookData);
 export const deleteBook = (bookId) => axios.delete(`/api/books/${bookId}/delete/`);
+export const getShelves = () => axios.get('/api/books/shelves/');
