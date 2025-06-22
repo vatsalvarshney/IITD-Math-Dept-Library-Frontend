@@ -95,7 +95,9 @@ const Landing = () => {
       <div className="bg-gray-900 text-white py-3 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm">&copy; {new Date().getFullYear()} IIT Delhi</p>
-          <p className="text-sm">Developed by <a href='https://www.linkedin.com/in/vatsal-varshney/'>Vatsal Varshney</a></p>
+          <p className="text-sm">Data collected by 2021 Entry B. Tech. students, Mathematics Department and helped by five research scholars</p>
+          <p className="text-sm">Website developed by Vatsal Varshney (2021MT10700)</p>
+          <p className="text-sm">Supervised by Prof. Aparna Mehra, HoD Mathematics Department</p>
         </div>
       </div>
     </div>

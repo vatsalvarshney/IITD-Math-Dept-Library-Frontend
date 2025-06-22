@@ -76,7 +76,7 @@ const BookForm = ({ onSubmit, isSubmitting, initialData = null }) => {
           name="isbn"
           value={formData.isbn}
           onChange={handleChange}
-          required
+          // required
           className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 max-w-xs"
         />
       </div>
